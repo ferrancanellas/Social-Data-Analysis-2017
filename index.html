@@ -51,7 +51,8 @@
 				.style("stroke", "dimgray");
 				var layer1 = svg.append('g')
 				var layer2 = svg.append('g')
-				
+				var labels = svg.append('g');
+
 				d3.csv("kmeans.csv", function(data) {
 					dataset_points = data;
 					circles = layer1.selectAll("circle")
@@ -96,6 +97,22 @@
 						else {return "0";}
 					});
 				}); 
+
+				labels.selectAll("text")
+				.data(json.features)
+				.enter()
+				.append("svg:text")
+				.text(function(d){
+					return d.properties.DISTRICT;
+				})
+				.attr("x", function(d){
+					return path.centroid(d)[0];
+				})
+				.attr("y", function(d){
+					return  path.centroid(d)[1];
+				})
+				.attr("text-anchor","middle")
+				.attr('font-size','10pt');
 
 				d3.selectAll("p")
 				.on("click", function() {
